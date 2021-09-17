@@ -1,0 +1,12 @@
+Required fields:
+
+date
+total sales
+num_orders
+Sessions
+retention rate
+Comversion
+
+
+login page - 
+scrapeing_page - https://syra-coffee.myshopify.com/admin/dashboards
