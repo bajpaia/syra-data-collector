@@ -63,7 +63,7 @@ def load_sheet(COLUMNS = ['Date', 'Total Sales', '#Orders', 'Sessions', 'Retenti
 
 
 
-@sched.scheduled_job('cron', hour=22, min=15)
+@sched.scheduled_job('cron', hour=22, minute=15)
 def main():
     options = Options()
     options.add_argument('--headless')
