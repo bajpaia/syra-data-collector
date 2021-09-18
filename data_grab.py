@@ -1,15 +1,16 @@
 import os
 import time
 import datetime
-import gspread as gs
-import pandas as pd
-from selenium import webdriver
+import gspread as gs ##'4.0.1'
+import pandas as pd  ##1.3.3
+from selenium import webdriver ## '3.141.0'
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
-from df2gspread import df2gspread as d2g
+from df2gspread import df2gspread as d2g ## 1.0.4
 from oauth2client.service_account import ServiceAccountCredentials
+import apscheduler ##3.7.0
 
 options = Options()
 options.add_argument('--headless')
@@ -56,7 +57,7 @@ SHOPIFY_PARTNER_XPATH = '//*[@id="AppFrameMain"]/div/div/div/div/form/section[3]
 SHOPIFY_STORE_XPATH = '//*[@id="29920460884"]/div/div/div[3]/div[2]/a'
 ACCOUNT_XPATH = '//*[@id="body-content"]/div[1]/div/div/div/div/div[2]/div/div/a[1]'
 ANALYTICS_XPATH ='//*[@id="AppFrameNav"]/nav/div[2]/ul[1]/li[5]/div[1]/a/span'
-PAGE_2_SCRAPE = 'https://syra-coffee.myshopify.com/admin/dashboards'
+
 
 SALES_XPATH = '//*[@id="AppFrameMain"]/div/div/div[2]/div[2]/div[1]/div[1]/div/div/div/div[2]/div/div[1]/div/div/div[1]/p'
 SESSIONS_XPATH = '//*[@id="AppFrameMain"]/div/div/div[2]/div[2]/div[2]/div[1]/div/div/div/div[2]/div/div[1]/div/div/div[1]/p'
@@ -68,7 +69,7 @@ driver = webdriver.Chrome(executable_path='./WebDriver/bin/chromedriver', chrome
 driver.get(LOGIN_URL)
 driver.find_element_by_id(EMAIL_ID).send_keys(LOGIN_PAYLOAD["username"])  
 driver.find_element_by_name(LOGIN_SUBMIT_NAME).click()
-time.sleep(1)
+time.sleep(1)e
 driver.find_element_by_id(PASSWORD_ID).send_keys(LOGIN_PAYLOAD["password"]) 
 driver.implicitly_wait(20) 
 driver.find_element_by_name(LOGIN_SUBMIT_NAME).click()
