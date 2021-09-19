@@ -64,7 +64,7 @@ def load_sheet(COLUMNS = ['Date', 'Total Sales', '#Orders', 'Sessions', 'Retenti
 
 
 
-@sched.scheduled_job('cron', hour=17, minute=5)
+@sched.scheduled_job('cron', hour=17, minute=12)
 # @sched.scheduled_job('cron', hour=22, minute=15)
 def main():
     options = Options()
@@ -76,8 +76,8 @@ def main():
     options.add_argument("--no-sandbox")
     options.add_argument('window-size=1920x1080')
     options.add_argument("--start-maximized")
-    # driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=options)
-    driver = webdriver.Chrome(executable_path='./WebDriver/bin/chromedriver', chrome_options=options)
+    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=options)
+    # driver = webdriver.Chrome(executable_path='./WebDriver/ bin/chromedriver', chrome_options=options)
 
     # options = webdriver.FirefoxOptions()
     # options.log.level = "trace"
