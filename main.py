@@ -35,6 +35,7 @@ LOGIN_URL = 'https://accounts.shopify.com/lookup?rid=6114de03-e4e2-4556-b60d-0f1
 EMAIL_SUBMIT_XPATH = '/html/body/div[1]/div/div/div/div/div[2]/div/form/button'
 EMAIL_FORM_XPATH = '//*[@id="body-content"]/div[1]/div/div/div/div/div[2]/div/form'
 LOGIN_BUTTON_XPATH = '/html/body/div[1]/div/div/div/div/div[2]/div/div/form/div[2]/ul/button'
+LOGIN_FORM_ID = 'login_form'
 SHOPIFY_PARTNER_XPATH = '//*[@id="AppFrameMain"]/div/div/div/div/form/section[3]/div/div[2]/section[2]/ul/li/div/div/a'
 SHOPIFY_STORE_XPATH = '/html/body/div/div[2]/main/div/div/div[1]/div/div[1]/main/div/div[1]/div[2]/div/div[2]/div[1]/div[2]/ul/li/div/div/div/div/div/div[3]/div[2]/a'
 ACCOUNT_XPATH = '//*[@id="body-content"]/div[1]/div/div/div/div/div[2]/div/div/a[1]'
@@ -65,7 +66,7 @@ def load_sheet(COLUMNS = ['Date', 'Total Sales', '#Orders', 'Sessions', 'Retenti
 
 
 
-@sched.scheduled_job('cron', hour=17, minute=50)
+# @sched.scheduled_job('cron', hour=17, minute=50)
 # @sched.scheduled_job('cron', hour=22, minute=15)
 def main():
     options = Options()
@@ -99,7 +100,7 @@ def main():
     driver.find_element_by_xpath(EMAIL_FORM_XPATH).submit()
     print("clicked next")
     time.sleep(5)
-    driver.find_element((By.ID, PASSWORD_ID)).send_keys(LOGIN_PAYLOAD["password"])
+    driver.find_element_by_id(PASSWORD_ID).send_keys(LOGIN_PAYLOAD["password"])
     print("added password")
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, LOGIN_BUTTON_XPATH))).click()
     print("Logged in")
@@ -145,6 +146,6 @@ def main():
 
 
 if __name__ == '__main__':
-    sched.start()
-    # main()
+    # sched.start()
+    main()
 
