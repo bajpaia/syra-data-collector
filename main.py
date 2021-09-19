@@ -64,7 +64,7 @@ def load_sheet(COLUMNS = ['Date', 'Total Sales', '#Orders', 'Sessions', 'Retenti
 
 
 
-@sched.scheduled_job('cron', hour=8, minute=15)
+@sched.scheduled_job('cron', hour=11, minute=50)
 # @sched.scheduled_job('cron', hour=22, minute=15)
 def main():
     options = Options()
@@ -114,10 +114,10 @@ def main():
     'Conversion':[conversion]}
     new_row = pd.DataFrame.from_dict(data_dict)
     print(new_row)
-    df = load_sheet()
-    df = pd.concat([df, new_row])
-    df.to_csv('history.csv', index=False)
-    d2g.upload(df, SHEET_ID, SHEET_NAME, credentials=creds, row_names=True)
+    # df = load_sheet()
+    # df = pd.concat([df, new_row])
+    # df.to_csv('history.csv', index=False)
+    # d2g.upload(df, SHEET_ID, SHEET_NAME, credentials=creds, row_names=True)
 
 
 if __name__ == '__main__':
