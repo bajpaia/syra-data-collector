@@ -63,12 +63,21 @@ def load_sheet(COLUMNS = ['Date', 'Total Sales', '#Orders', 'Sessions', 'Retenti
 
 
 
-@sched.scheduled_job('cron', hour=22, minute=15)
+# @sched.scheduled_job('cron', hour=22, minute=15)
+@sched.scheduled_job('cron', hour=7, minute=10)
 def main():
-    options = Options()
-    options.add_argument('--headless')
-    options.add_argument('--disable-gpu')
-    driver = webdriver.Chrome(executable_path='./WebDriver/bin/chromedriver', chrome_options=options)
+    # options = Options()
+    
+    # options.add_argument('--headless')
+    # options.add_argument('--disable-gpu')
+    # driver = webdriver.Chrome(executable_path='./WebDriver/bin/chromedriver', chrome_options=options)
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--no-sandbox")
+    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
     driver.get(LOGIN_URL)
     driver.find_element_by_id(EMAIL_ID).send_keys(LOGIN_PAYLOAD["username"])  
     driver.find_element_by_name(LOGIN_SUBMIT_NAME).click()
