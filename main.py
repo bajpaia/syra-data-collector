@@ -64,21 +64,17 @@ def load_sheet(COLUMNS = ['Date', 'Total Sales', '#Orders', 'Sessions', 'Retenti
 
 
 
-@sched.scheduled_job('cron', hour=7, minute=45)
+@sched.scheduled_job('cron', hour=8, minute=0)
 # @sched.scheduled_job('cron', hour=22, minute=15)
 def main():
-    # options = Options()
-    
-    # options.add_argument('--headless')
-    # options.add_argument('--disable-gpu')
-    # driver = webdriver.Chrome(executable_path='./WebDriver/bin/chromedriver', chrome_options=options)
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument('--disable-gpu')
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--no-sandbox")
-    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+    options = Options()
+    options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+    options.add_argument("--headless")
+    options.add_argument('--disable-gpu')
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--no-sandbox")
+    # driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=options)
+    driver = webdriver.Chrome(executable_path='./WebDriver/bin/chromedriver', chrome_options=options)
     driver.get(LOGIN_URL)
     driver.find_element_by_id(EMAIL_ID).send_keys(LOGIN_PAYLOAD["username"])  
     time.sleep(2)
