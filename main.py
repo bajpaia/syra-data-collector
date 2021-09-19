@@ -32,7 +32,7 @@ SHEET_NAME = 'e-commerce'
 SHEET_URL = 'https://docs.google.com/spreadsheets/d/{0}/gviz/tq?tqx=out:csv&sheet={1}'.format(SHEET_ID, SHEET_NAME)
 EMAIL_ID = 'account_email'
 PASSWORD_ID = "account_password"
-LOGIN_URL = 'https://accounts.shopify.com/lookup?rid=6114de03-e4e2-4556-b60d-0f1d9568baab'
+LOGIN_URL = '/html/body/div[1]/div/div/div/div/div[2]/div/form/button'
 LOGIN_SUBMIT_XPATH = '//*[@id="body-content"]/div[1]/div/div/div/div/div[2]/div/form/button'
 LOGIN_BUTTON_XPATH = '/html/body/div[1]/div/div/div/div/div[2]/div/div/form/div[2]/ul/button'
 SHOPIFY_PARTNER_XPATH = '//*[@id="AppFrameMain"]/div/div/div/div/form/section[3]/div/div[2]/section[2]/ul/li/div/div/a'
@@ -65,7 +65,7 @@ def load_sheet(COLUMNS = ['Date', 'Total Sales', '#Orders', 'Sessions', 'Retenti
 
 
 
-@sched.scheduled_job('cron', hour=13, minute=48)
+@sched.scheduled_job('cron', hour=13, minute=54)
 # @sched.scheduled_job('cron', hour=22, minute=15)
 def main():
     options = Options()
