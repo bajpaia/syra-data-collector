@@ -63,22 +63,23 @@ def load_sheet(COLUMNS = ['Date', 'Total Sales', '#Orders', 'Sessions', 'Retenti
 
 
 
-@sched.scheduled_job('cron', hour=16, minute=19)
+@sched.scheduled_job('cron', hour=16, minute=33)
 # @sched.scheduled_job('cron', hour=22, minute=15)
 def main():
     options = Options()
     options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+    
     options.add_argument("--headless")
     options.add_argument('--disable-gpu')
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--no-sandbox")
     options.add_argument('window-size=1920x1080')
+    options.add_argument("--start-maximized")
     driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=options)
     # driver = webdriver.Chrome(executable_path='./WebDriver/bin/chromedriver', chrome_options=options)
     driver.get(LOGIN_URL)
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, EMAIL_ID))).send_keys(LOGIN_PAYLOAD["username"])  
     print("added username")
-    print("Element is visible? " + str(driver.find_element_by_xpath(EMAIL_SUBMIT_XPATH).is_displayed()))
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, EMAIL_SUBMIT_XPATH))).click()
     print("clicked next")
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, PASSWORD_ID))).send_keys(LOGIN_PAYLOAD["password"])
