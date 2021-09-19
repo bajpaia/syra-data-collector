@@ -16,8 +16,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler ##3.7.0
 username = os.environ.get('USERNAME')
 password = os.environ.get('PASSWORD') 
 
-username = 'animesh.bajpai@protonmail.com'
-password = '0BabyJ32,'
+
 
 LOGIN_PAYLOAD = {
                     "username": username,
@@ -78,10 +77,9 @@ def main():
     # driver = webdriver.Chrome(executable_path='./WebDriver/bin/chromedriver', chrome_options=options)
     driver.get(LOGIN_URL)
     driver.find_element_by_id(EMAIL_ID).send_keys(LOGIN_PAYLOAD["username"])  
-    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, LOGIN_SUBMIT_NAME))).click()
-    time.sleep(5)
-    driver.find_element_by_name(LOGIN_SUBMIT_NAME).click()
-    time.sleep(5)
+    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, LOGIN_SUBMIT_XPATH))).click()
+    # driver.find_element_by_name(LOGIN_SUBMIT_NAME).click()
+    # time.sleep(5)
     driver.find_element_by_id(PASSWORD_ID).send_keys(LOGIN_PAYLOAD["password"]) 
     time.sleep(5)
     driver.find_element_by_name(LOGIN_SUBMIT_NAME).click()
