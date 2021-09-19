@@ -102,7 +102,7 @@ def main():
     driver.find_element_by_id(EMAIL_ID).send_keys(Keys.RETURN)
     print("clicked next")
     time.sleep(2)
-    print(driver.switch_to.active_element().get_attribute("outerHTML"))
+    print(driver.switch_to.active_element.get_attribute("outerHTML"))
     driver.switch_to.active_element().send_keys(LOGIN_PAYLOAD["password"])
     print("added password")
     print(driver.switch_to.active_element().get_attribute("outerHTML"))
