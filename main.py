@@ -33,6 +33,7 @@ EMAIL_ID = 'account_email'
 PASSWORD_ID = "account_password"
 LOGIN_URL = 'https://accounts.shopify.com/lookup?rid=6114de03-e4e2-4556-b60d-0f1d9568baab'
 EMAIL_SUBMIT_XPATH = '/html/body/div[1]/div/div/div/div/div[2]/div/form/button'
+EMAIL_FORM_XPATH = '//*[@id="body-content"]/div[1]/div/div/div/div/div[2]/div/form'
 LOGIN_BUTTON_XPATH = '/html/body/div[1]/div/div/div/div/div[2]/div/div/form/div[2]/ul/button'
 SHOPIFY_PARTNER_XPATH = '//*[@id="AppFrameMain"]/div/div/div/div/form/section[3]/div/div[2]/section[2]/ul/li/div/div/a'
 SHOPIFY_STORE_XPATH = '/html/body/div/div[2]/main/div/div/div[1]/div/div[1]/main/div/div[1]/div[2]/div/div[2]/div[1]/div[2]/ul/li/div/div/div/div/div/div[3]/div[2]/a'
@@ -64,7 +65,7 @@ def load_sheet(COLUMNS = ['Date', 'Total Sales', '#Orders', 'Sessions', 'Retenti
 
 
 
-@sched.scheduled_job('cron', hour=17, minute=12)
+@sched.scheduled_job('cron', hour=17, minute=30)
 # @sched.scheduled_job('cron', hour=22, minute=15)
 def main():
     options = Options()
@@ -76,8 +77,8 @@ def main():
     options.add_argument("--no-sandbox")
     options.add_argument('window-size=1920x1080')
     options.add_argument("--start-maximized")
-    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=options)
-    # driver = webdriver.Chrome(executable_path='./WebDriver/ bin/chromedriver', chrome_options=options)
+    # driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=options)
+    driver = webdriver.Chrome(executable_path='./WebDriver/bin/chromedriver', chrome_options=options)
 
     # options = webdriver.FirefoxOptions()
     # options.log.level = "trace"
@@ -94,7 +95,8 @@ def main():
     driver.get(LOGIN_URL)
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, EMAIL_ID))).send_keys(LOGIN_PAYLOAD["username"])  
     print("added username")
-    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.NAME, "commit"))).click()
+    # WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.NAME, "commit"))).click()
+    driver.find_element_by_xpath(EMAIL_FORM_XPATH).submit()
     print("clicked next")
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, PASSWORD_ID))).send_keys(LOGIN_PAYLOAD["password"])
     print("added password")
