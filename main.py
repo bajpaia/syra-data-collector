@@ -31,6 +31,7 @@ SHEET_NAME = 'e-commerce'
 SHEET_URL = 'https://docs.google.com/spreadsheets/d/{0}/gviz/tq?tqx=out:csv&sheet={1}'.format(SHEET_ID, SHEET_NAME)
 EMAIL_ID = 'account_email'
 PASSWORD_ID = "account_password"
+PASSWORD_XPATH = "/html/body/div[1]/div/div/div/div/div[2]/div/div/form/div[1]/div[2]/div/input"
 LOGIN_URL = 'https://accounts.shopify.com/lookup?rid=6114de03-e4e2-4556-b60d-0f1d9568baab'
 EMAIL_SUBMIT_XPATH = '/html/body/div[1]/div/div/div/div/div[2]/div/form/button'
 EMAIL_FORM_XPATH = '//*[@id="body-content"]/div[1]/div/div/div/div/div[2]/div/form'
@@ -100,7 +101,7 @@ def main():
     driver.find_element_by_xpath(EMAIL_FORM_XPATH).submit()
     print("clicked next")
     time.sleep(5)
-    driver.find_element_by_id(PASSWORD_ID).send_keys(LOGIN_PAYLOAD["password"])
+    driver.find_element_by_xpath(PASSWORD_XPATH).send_keys(LOGIN_PAYLOAD["password"])
     print("added password")
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, LOGIN_BUTTON_XPATH))).click()
     print("Logged in")
