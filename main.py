@@ -11,8 +11,6 @@ from selenium.webdriver.chrome.options import Options
 from df2gspread import df2gspread as d2g ## 1.0.4
 from oauth2client.service_account import ServiceAccountCredentials
 from apscheduler.schedulers.blocking import BlockingScheduler ##3.7.0
-import undetected_chromedriver as uc ##3.0.3
-
 
 username = os.environ.get('USERNAME')
 password = os.environ.get('PASSWORD') 
@@ -65,18 +63,17 @@ def load_sheet(COLUMNS = ['Date', 'Total Sales', '#Orders', 'Sessions', 'Retenti
 
 
 
-@sched.scheduled_job('cron', hour=14, minute=7)
+@sched.scheduled_job('cron', hour=14, minute=15)
 # @sched.scheduled_job('cron', hour=22, minute=15)
 def main():
     options = Options()
     options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-    # options.add_argument("--headless")
+    options.add_argument("--headless")
     options.add_argument('--disable-gpu')
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--no-sandbox")
     options.add_argument('window-size=1920x1080')
-    # driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=options)
-    driver = uc.Chrome(options=options)
+    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=options)
     # driver = webdriver.Chrome(executable_path='./WebDriver/bin/chromedriver', chrome_options=options)
     driver.get(LOGIN_URL)
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, EMAIL_ID))).send_keys(LOGIN_PAYLOAD["username"])  
