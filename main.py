@@ -9,6 +9,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+from selenium.webdriver.common.keys import Keys
 from df2gspread import df2gspread as d2g ## 1.0.4
 from oauth2client.service_account import ServiceAccountCredentials
 from apscheduler.schedulers.blocking import BlockingScheduler ##3.7.0
@@ -98,13 +99,13 @@ def main():
     driver.get(LOGIN_URL)
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, EMAIL_ID))).send_keys(LOGIN_PAYLOAD["username"])  
     print("added username")
-    driver.find_element_by_xpath(EMAIL_FORM_XPATH).submit()
+    driver.find_element_by_id(EMAIL_ID).send_keys(Keys.RETURN)
     print("clicked next")
     time.sleep(2)
-    print(driver.switch_to_active_element().get_attribute("outerHTML"))
-    driver.switch_to_active_element().send_keys(LOGIN_PAYLOAD["password"])
+    print(driver.switch_to.active_element().get_attribute("outerHTML"))
+    driver.switch_to.active_element().send_keys(LOGIN_PAYLOAD["password"])
     print("added password")
-    print(driver.switch_to_active_element().get_attribute("outerHTML"))
+    print(driver.switch_to.active_element().get_attribute("outerHTML"))
     time.sleep(1)
     driver.find_element_by_xpath(LOGIN_FORM_XPATH).submit()
     print("Logged in")
