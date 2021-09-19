@@ -64,7 +64,7 @@ def load_sheet(COLUMNS = ['Date', 'Total Sales', '#Orders', 'Sessions', 'Retenti
 
 
 
-@sched.scheduled_job('cron', hour=7, minute=29)
+@sched.scheduled_job('cron', hour=7, minute=45)
 # @sched.scheduled_job('cron', hour=22, minute=15)
 def main():
     # options = Options()
