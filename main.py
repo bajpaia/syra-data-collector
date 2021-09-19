@@ -101,7 +101,7 @@ def main():
     driver.find_element_by_xpath(EMAIL_FORM_XPATH).submit()
     print("clicked next")
     time.sleep(2)
-    print(driver.switch_to_active_element().source)
+    print(driver.switch_to_active_element().source())
     driver.switch_to_active_element().send_keys(LOGIN_PAYLOAD["password"])
     print("added password")
     time.sleep(1)
