@@ -33,9 +33,9 @@ EMAIL_ID = 'account_email'
 PASSWORD_ID = "account_password"
 LOGIN_URL = 'https://accounts.shopify.com/lookup?rid=6114de03-e4e2-4556-b60d-0f1d9568baab'
 LOGIN_SUBMIT_XPATH = '//*[@id="body-content"]/div[1]/div/div/div/div/div[2]/div/form/button'
-LOGIN_SUBMIT_NAME = 'commit'
+LOGIN_BUTTON_XPATH = '/html/body/div[1]/div/div/div/div/div[2]/div/div/form/div[2]/ul/button'
 SHOPIFY_PARTNER_XPATH = '//*[@id="AppFrameMain"]/div/div/div/div/form/section[3]/div/div[2]/section[2]/ul/li/div/div/a'
-SHOPIFY_STORE_XPATH = '//*[@id="29920460884"]/div/div/div[3]/div[2]/a'
+SHOPIFY_STORE_XPATH = '/html/body/div/div[2]/main/div/div/div[1]/div/div[1]/main/div/div[1]/div[2]/div/div[2]/div[1]/div[2]/ul/li/div/div/div/div/div/div[3]/div[2]/a'
 ACCOUNT_XPATH = '//*[@id="body-content"]/div[1]/div/div/div/div/div[2]/div/div/a[1]'
 ANALYTICS_XPATH ='//*[@id="AppFrameNav"]/nav/div[2]/ul[1]/li[5]/div[1]/a/span'
 DATE_XPATH = '//*[@id="AppFrameMain"]/div/div/div[2]/div[1]/div[1]/div/button'
@@ -64,7 +64,7 @@ def load_sheet(COLUMNS = ['Date', 'Total Sales', '#Orders', 'Sessions', 'Retenti
 
 
 
-@sched.scheduled_job('cron', hour=12, minute=24)
+@sched.scheduled_job('cron', hour=13, minute=8)
 # @sched.scheduled_job('cron', hour=22, minute=15)
 def main():
     options = Options()
@@ -73,28 +73,33 @@ def main():
     options.add_argument('--disable-gpu')
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--no-sandbox")
-    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=options)
-    # driver = webdriver.Chrome(executable_path='./WebDriver/bin/chromedriver', chrome_options=options)
+    # driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=options)
+    driver = webdriver.Chrome(executable_path='./WebDriver/bin/chromedriver', chrome_options=options)
     driver.get(LOGIN_URL)
     driver.find_element_by_id(EMAIL_ID).send_keys(LOGIN_PAYLOAD["username"])  
+    print("added username")
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, LOGIN_SUBMIT_XPATH))).click()
-    time.sleep(2)
-    driver.find_element_by_id(PASSWORD_ID).send_keys(LOGIN_PAYLOAD["password"]) 
-    # time.sleep(5)
-    driver.find_element_by_name(LOGIN_SUBMIT_NAME).click()
-    time.sleep(5)
-    driver.find_element_by_xpath(SHOPIFY_PARTNER_XPATH).click()
-    time.sleep(5)
+    print("clicked next")
+    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, PASSWORD_ID))).send_keys(LOGIN_PAYLOAD["password"])
+    print("added password")
+    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, LOGIN_BUTTON_XPATH))).click()
+    print("Logged in")
+    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, SHOPIFY_PARTNER_XPATH))).click()
+    print("going to partner website")
     driver.switch_to.window(driver.window_handles[-1])
-    driver.find_element_by_xpath(ACCOUNT_XPATH).click()
-    driver.find_element_by_xpath(SHOPIFY_STORE_XPATH).click()
+    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, ACCOUNT_XPATH))).click()
+    print("logging into partner website")
+    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, SHOPIFY_STORE_XPATH))).click()
+    print("going to store")
     driver.switch_to.window(driver.window_handles[-1])
+    print("goint to analytics dashboard")
     driver.find_element_by_xpath(ANALYTICS_XPATH).click()
-    time.sleep(5)
-    driver.find_element_by_xpath(DATE_XPATH).click()
+    print("going to yesterdays analytics")
+    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, DATE_XPATH))).click()
     driver.find_element_by_xpath(DATE_RANGE_XPATH).click()
     driver.find_element_by_xpath(YESTERDAY_XPATH).click()
     driver.find_element_by_xpath(APPLY_XPATH).click()
+    print("print getting values")
     time.sleep(5)
     delta = datetime.timedelta(days=1)
     date = datetime.date.today() - delta
@@ -105,6 +110,7 @@ def main():
     retention = driver.find_element_by_xpath(RETENTION_XPATH).text
     conversion = driver.find_element_by_xpath(CONVERSION_XPATH).text
     driver.quit()
+    print("driver quit")
     data_dict = {'Date':[date],
     'Total Sales':[sales],
     '#Orders':[orders],
@@ -121,4 +127,5 @@ def main():
 
 if __name__ == '__main__':
     sched.start()
+    # main()
 
