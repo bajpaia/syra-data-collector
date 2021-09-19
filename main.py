@@ -104,6 +104,7 @@ def main():
     print(driver.switch_to_active_element().get_attribute("outerHTML"))
     driver.switch_to_active_element().send_keys(LOGIN_PAYLOAD["password"])
     print("added password")
+    print(driver.switch_to_active_element().get_attribute("outerHTML"))
     time.sleep(1)
     driver.find_element_by_xpath(LOGIN_FORM_XPATH).submit()
     print("Logged in")
