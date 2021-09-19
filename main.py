@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from df2gspread import df2gspread as d2g ## 1.0.4
 from oauth2client.service_account import ServiceAccountCredentials
 from apscheduler.schedulers.blocking import BlockingScheduler ##3.7.0
@@ -66,17 +67,35 @@ def load_sheet(COLUMNS = ['Date', 'Total Sales', '#Orders', 'Sessions', 'Retenti
 @sched.scheduled_job('cron', hour=16, minute=33)
 # @sched.scheduled_job('cron', hour=22, minute=15)
 def main():
-    options = Options()
-    options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+    # options = Options()
+    # options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
     
-    options.add_argument("--headless")
-    options.add_argument('--disable-gpu')
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--no-sandbox")
-    options.add_argument('window-size=1920x1080')
-    options.add_argument("--start-maximized")
-    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=options)
+    # options.add_argument("--headless")
+    # options.add_argument('--disable-gpu')
+    # options.add_argument("--disable-dev-shm-usage")
+    # options.add_argument("--no-sandbox")
+    # options.add_argument('window-size=1920x1080')
+    # options.add_argument("--start-maximized")
+    # driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=options)
     # driver = webdriver.Chrome(executable_path='./WebDriver/bin/chromedriver', chrome_options=options)
+
+    options = webdriver.FirefoxOptions()
+	
+	# enable trace level for debugging 
+    options.log.level = "trace"
+    options.add_argument("-headless")
+    options.add_argument("-disable-gpu")
+    options.add_argument("-no-sandbox")
+    binary = FirefoxBinary(os.environ.get('FIREFOX_BIN'))
+    driver = webdriver.Firefox(
+		firefox_binary=binary,
+		executable_path=os.environ.get('GECKODRIVER_PATH'),
+		options=options)
+
+
+
+
+
     driver.get(LOGIN_URL)
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, EMAIL_ID))).send_keys(LOGIN_PAYLOAD["username"])  
     print("added username")
