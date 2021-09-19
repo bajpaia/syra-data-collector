@@ -65,7 +65,7 @@ def load_sheet(COLUMNS = ['Date', 'Total Sales', '#Orders', 'Sessions', 'Retenti
 
 
 
-@sched.scheduled_job('cron', hour=17, minute=40)
+@sched.scheduled_job('cron', hour=17, minute=50)
 # @sched.scheduled_job('cron', hour=22, minute=15)
 def main():
     options = Options()
@@ -98,7 +98,8 @@ def main():
     # WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.NAME, "commit"))).click()
     driver.find_element_by_xpath(EMAIL_FORM_XPATH).submit()
     print("clicked next")
-    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, PASSWORD_ID))).send_keys(LOGIN_PAYLOAD["password"])
+    time.sleep(5)
+    driver.find_element((By.ID, PASSWORD_ID)).send_keys(LOGIN_PAYLOAD["password"])
     print("added password")
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, LOGIN_BUTTON_XPATH))).click()
     print("Logged in")
