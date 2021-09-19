@@ -99,7 +99,7 @@ def main():
     driver.get(LOGIN_URL)
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, EMAIL_ID))).send_keys(LOGIN_PAYLOAD["username"])  
     print("added username")
-    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, EMAIL_SUBMIT_XPATH))).click()
+    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.NAME, "commit"))).click()
     print("clicked next")
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, PASSWORD_ID))).send_keys(LOGIN_PAYLOAD["password"])
     print("added password")
