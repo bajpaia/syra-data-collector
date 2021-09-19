@@ -17,8 +17,8 @@ import undetected_chromedriver as uc ##3.0.3
 username = os.environ.get('USERNAME')
 password = os.environ.get('PASSWORD') 
 
-# username = 'animesh.bajpai@protonmail.com'
-# password = '0BabyJ32,'
+username = 'animesh.bajpai@protonmail.com'
+password = '0BabyJ32,'
 
 LOGIN_PAYLOAD = {
                     "username": username,
@@ -33,7 +33,7 @@ SHEET_URL = 'https://docs.google.com/spreadsheets/d/{0}/gviz/tq?tqx=out:csv&shee
 EMAIL_ID = 'account_email'
 PASSWORD_ID = "account_password"
 LOGIN_URL = 'https://accounts.shopify.com/lookup?rid=6114de03-e4e2-4556-b60d-0f1d9568baab'
-LOGIN_SUBMIT_XPATH = '/html/body/div[1]/div/div/div/div/div[2]/div/form/button'
+EMAIL_SUBMIT_XPATH = '/html/body/div[1]/div/div/div/div/div[2]/div/form/button'
 LOGIN_BUTTON_XPATH = '/html/body/div[1]/div/div/div/div/div[2]/div/div/form/div[2]/ul/button'
 SHOPIFY_PARTNER_XPATH = '//*[@id="AppFrameMain"]/div/div/div/div/form/section[3]/div/div[2]/section[2]/ul/li/div/div/a'
 SHOPIFY_STORE_XPATH = '/html/body/div/div[2]/main/div/div/div[1]/div/div[1]/main/div/div[1]/div[2]/div/div[2]/div[1]/div[2]/ul/li/div/div/div/div/div/div[3]/div[2]/a'
@@ -65,12 +65,12 @@ def load_sheet(COLUMNS = ['Date', 'Total Sales', '#Orders', 'Sessions', 'Retenti
 
 
 
-@sched.scheduled_job('cron', hour=13, minute=56)
+@sched.scheduled_job('cron', hour=14, minute=7)
 # @sched.scheduled_job('cron', hour=22, minute=15)
 def main():
     options = Options()
     options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-    options.add_argument("--headless")
+    # options.add_argument("--headless")
     options.add_argument('--disable-gpu')
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--no-sandbox")
@@ -79,9 +79,9 @@ def main():
     driver = uc.Chrome(options=options)
     # driver = webdriver.Chrome(executable_path='./WebDriver/bin/chromedriver', chrome_options=options)
     driver.get(LOGIN_URL)
-    driver.find_element_by_id(EMAIL_ID).send_keys(LOGIN_PAYLOAD["username"])  
+    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, EMAIL_ID))).send_keys(LOGIN_PAYLOAD["username"])  
     print("added username")
-    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, LOGIN_SUBMIT_XPATH))).click()
+    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, EMAIL_SUBMIT_XPATH))).click()
     print("clicked next")
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, PASSWORD_ID))).send_keys(LOGIN_PAYLOAD["password"])
     print("added password")
