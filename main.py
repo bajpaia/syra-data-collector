@@ -102,7 +102,9 @@ def main():
     print("clicked next")
     time.sleep(5)
     print(driver.page_source)
-    driver.find_element_by_xpath(PASSWORD_XPATH).send_keys(LOGIN_PAYLOAD["password"])
+
+    # driver.find_element_by_xpath(PASSWORD_XPATH).send_keys(LOGIN_PAYLOAD["password"])
+    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, PASSWORD_XPATH))).click()
     print("added password")
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, LOGIN_BUTTON_XPATH))).click()
     print("Logged in")
