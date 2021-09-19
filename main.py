@@ -64,7 +64,7 @@ def load_sheet(COLUMNS = ['Date', 'Total Sales', '#Orders', 'Sessions', 'Retenti
 
 
 
-@sched.scheduled_job('cron', hour=7, minute=25)
+@sched.scheduled_job('cron', hour=7, minute=29)
 # @sched.scheduled_job('cron', hour=22, minute=15)
 def main():
     # options = Options()
@@ -81,6 +81,7 @@ def main():
     driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
     driver.get(LOGIN_URL)
     driver.find_element_by_id(EMAIL_ID).send_keys(LOGIN_PAYLOAD["username"])  
+    time.sleep(2)
     driver.find_element_by_name(LOGIN_SUBMIT_NAME).click()
     time.sleep(1)
     driver.find_element_by_id(PASSWORD_ID).send_keys(LOGIN_PAYLOAD["password"]) 
