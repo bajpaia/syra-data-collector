@@ -37,6 +37,7 @@ EMAIL_SUBMIT_XPATH = '/html/body/div[1]/div/div/div/div/div[2]/div/form/button'
 EMAIL_FORM_XPATH = '//*[@id="body-content"]/div[1]/div/div/div/div/div[2]/div/form'
 LOGIN_BUTTON_XPATH = '/html/body/div[1]/div/div/div/div/div[2]/div/div/form/div[2]/ul/button'
 LOGIN_FORM_ID = 'login_form'
+LOGIN_FORM_XPATH = '//*[@id="login_form"]'
 SHOPIFY_PARTNER_XPATH = '//*[@id="AppFrameMain"]/div/div/div/div/form/section[3]/div/div[2]/section[2]/ul/li/div/div/a'
 SHOPIFY_STORE_XPATH = '/html/body/div/div[2]/main/div/div/div[1]/div/div[1]/main/div/div[1]/div[2]/div/div[2]/div[1]/div[2]/ul/li/div/div/div/div/div/div[3]/div[2]/a'
 ACCOUNT_XPATH = '//*[@id="body-content"]/div[1]/div/div/div/div/div[2]/div/div/a[1]'
@@ -102,7 +103,8 @@ def main():
     time.sleep(2)
     driver.switch_to_active_element().send_keys(LOGIN_PAYLOAD["password"])
     print("added password")
-    driver.find_element_by_id(LOGIN_FORM_ID).submit()
+    time.sleep(1)
+    driver.find_element_by_xpath(LOGIN_FORM_XPATH).submit()
     print("Logged in")
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, SHOPIFY_PARTNER_XPATH))).click()
     print("going to partner website")
