@@ -1,4 +1,4 @@
-
+import os
 import time
 import pandas as pd
 import datetime
@@ -21,10 +21,12 @@ COLUMNS = ['Date',
 'Sessions',
 'Retention Rate',
 'Comversion']
-# LOGIN_PAYLOAD = {
-#                     "username": "animesh.bajpai@protonmail.com",
-#                     "password": "0BabyJ32,"
-#                 }
+username = os.environ.get('USERNAME')
+password = os.environ.get('PASSWORD') 
+LOGIN_PAYLOAD = {
+                    "username": username,
+                    "password": password
+                }
 
 # EMAIL_ID = 'account_email'
 # PASSWORD_ID = "account_password"
