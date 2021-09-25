@@ -13,6 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 
 
+
   
 
 COLUMNS = ['Date',
@@ -61,6 +62,7 @@ DATE_XPATH = '//*[@id="AppFrameMain"]/div/div/div[2]/div[1]/div[1]/div/button'
 START_DATE_XPATH = '/html/body/div/div/div[2]/div[4]/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div[1]/div/div[2]/div/div/input'
 END_DATE_XPATH = '/html/body/div/div/div[2]/div[4]/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div[2]/div/div[2]/div/div/input'
 APPLY_XPATH = '/html/body/div/div/div[2]/div[4]/div/div/div[2]/div/div/div[2]/div/div/div[2]/button'
+creds = ServiceAccountCredentials.from_json_keyfile_name(SERVICE_ACCOUNT_FILE, SCOPES)
 
 
 
@@ -116,25 +118,25 @@ data_dict = {'Date':[],
 end_date = yesterday
 delta = datetime.timedelta(days=1)
 start_date = last_update + delta
-while start_date <= end_date:
-    start_date_str = start_date.strftime('%Y-%m-%d')
-    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, DATE_XPATH))).click()
-    time.sleep(1)
-    driver.find_element_by_xpath(START_DATE_XPATH).send_keys(Keys.BACKSPACE*10)
-    driver.find_element_by_xpath(START_DATE_XPATH).send_keys(start_date_str)
-    driver.find_element_by_xpath(END_DATE_XPATH).send_keys(Keys.BACKSPACE*10)
-    driver.find_element_by_xpath(END_DATE_XPATH).send_keys(start_date_str)
-    driver.find_element_by_xpath(APPLY_XPATH).click()
-    time.sleep(5)
-    data_dict["Date"].append(start_date_str)
-    data_dict["Total Sales"].append(driver.find_element_by_xpath(SALES_XPATH).text)
-    data_dict["#Orders"].append(driver.find_element_by_xpath(ORDERS_XPATH).text)
-    data_dict['Sessions'].append(driver.find_element_by_xpath(SESSIONS_XPATH).text)
-    data_dict['Retention Rate'].append(driver.find_element_by_xpath(RETENTION_XPATH).text)
-    data_dict['Conversion'].append(driver.find_element_by_xpath(CONVERSION_XPATH).text)
 
-
-    start_date += delta
+if last_update != yesterday:
+    while start_date <= end_date:
+        start_date_str = start_date.strftime('%Y-%m-%d')
+        WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, DATE_XPATH))).click()
+        time.sleep(1)
+        driver.find_element_by_xpath(START_DATE_XPATH).send_keys(Keys.BACKSPACE*10)
+        driver.find_element_by_xpath(START_DATE_XPATH).send_keys(start_date_str)
+        driver.find_element_by_xpath(END_DATE_XPATH).send_keys(Keys.BACKSPACE*10)
+        driver.find_element_by_xpath(END_DATE_XPATH).send_keys(start_date_str)
+        driver.find_element_by_xpath(APPLY_XPATH).click()
+        time.sleep(5)
+        data_dict["Date"].append(start_date_str)
+        data_dict["Total Sales"].append(driver.find_element_by_xpath(SALES_XPATH).text)
+        data_dict["#Orders"].append(driver.find_element_by_xpath(ORDERS_XPATH).text)
+        data_dict['Sessions'].append(driver.find_element_by_xpath(SESSIONS_XPATH).text)
+        data_dict['Retention Rate'].append(driver.find_element_by_xpath(RETENTION_XPATH).text)
+        data_dict['Conversion'].append(driver.find_element_by_xpath(CONVERSION_XPATH).text)
+        start_date += delta
 driver.quit()
 
 
